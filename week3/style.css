@@ -1,0 +1,133 @@
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .logo {
+    width: 50px;         /* 원하는 크기로 조정 가능 */
+    height: 50px;
+    margin-right: 15px;  /* 텍스트와의 간격 */
+  }
+
+body {
+  margin: 0;
+}
+
+/* 네비바 섹션 */
+.navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 0; 
+  padding: 0; 
+  background-color: #cecbcba6;
+  list-style-type: none; 
+}
+
+.nav-item {
+  padding: 15px;
+}
+
+.nav-item a { 
+  text-align: center;
+  text-decoration: none; /*밑줄 없앰*/
+  color: rgb(0, 0, 0);
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 7px;
+}
+
+/* 자기소개 섹션 */
+.introduce-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+}
+
+/* 왼쪽 사진 */
+.profile-image img {
+  width: 350px;
+  height: 467px;
+  object-fit: cover;
+  border-radius: 25%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 오른쪽 텍스트 */
+.profile-text {
+  max-width: 500px;
+  text-align: left;
+}
+
+.profile-text h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.profile-text p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.summary {
+  background-color: #f0f0f0;   /* 연한 회색 배경 */
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 40px auto;          /* 가운데 정렬 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.summary ul {
+  list-style-type: none;      /* 기본 점 제거 */
+  padding: 0;
+  margin: 0;
+}
+
+.summary li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+}
+
+
+/* 앨범 섹션 */
+#album {
+    padding: 20px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  /* 앨범 그리드 레이아웃 */
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3x3 */
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  /* 각 앨범 아이템 */
+  .album-item img {
+    width: 100%;              
+    height: 200px;            
+    object-fit: cover;        
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  

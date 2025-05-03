@@ -54,7 +54,7 @@ function renderPhoto(data) {
 
 // 무작위 페이지 번호 생성 함수
 function getRandomPageNumber() {
-  return Math.floor(Math.random() * 50) + 1; // 예시로 1~50 페이지 중 랜덤
+  return Math.floor(Math.random() * 50) + 1; 
 }
 
 // API에서 데이터 가져오기기

@@ -28,7 +28,7 @@ export const getAuthAxios = (token) => {
         // 4. 원래 요청 재시도
         return (await axios.get(error.config.url, error.config)).data;
 
-      } catch (refreshError) {ㄴ
+      } catch (refreshError) {
         // 리프레시 토큰도 만료된 경우
         alert("다시 로그인 해주세요.");
         localStorage.removeItem("access");

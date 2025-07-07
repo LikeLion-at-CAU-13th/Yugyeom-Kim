@@ -1,0 +1,20 @@
+import logo from './logo.svg';
+import './App.css';
+import Signup from './pages/Signup';
+import Home from './pages/Home';
+import Mypage from './pages/Mypage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/signup" element={<Signup/>} />
+        <Route path="/mypage" element={<Mypage/>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

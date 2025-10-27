@@ -1,4 +1,4 @@
-// ✅ src/components/PostList.jsx
+// src/components/PostList.jsx
 import styled from "styled-components";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPosts, getPostsByUsername, uploadPost } from "../api";
@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 function PostList({ variant = FEED_VARIANT.HOME_FEED, showPostForm }) {
   const queryClient = useQueryClient();
 
-  // ✅ 1. variant 값에 따라 queryKey와 queryFn 동적 설정
+  // 1. variant 값에 따라 queryKey와 queryFn 동적 설정
   let postsQueryKey;
   let postsQueryFn;
 
@@ -24,7 +24,7 @@ function PostList({ variant = FEED_VARIANT.HOME_FEED, showPostForm }) {
     postsQueryFn = getPostsByUsername; // 내 피드 전용 포스트 조회
   }
 
-  // ✅ 2. useQuery로 데이터 불러오기
+  // 2. useQuery로 데이터 불러오기
   const {
     data: postsData,
     isPending,
@@ -35,24 +35,24 @@ function PostList({ variant = FEED_VARIANT.HOME_FEED, showPostForm }) {
     queryFn: postsQueryFn,
   });
 
-  // ✅ 3. useMutation으로 업로드 기능 구현 + invalidateQueries로 자동 새로고침
+  // 3. useMutation으로 업로드 기능 구현 + invalidateQueries로 자동 새로고침
   const uploadPostMutation = useMutation({
     mutationFn: uploadPost,
     onSuccess: () => {
       toast("포스트가 성공적으로 업로드 되었습니다!");
-      queryClient.invalidateQueries(["posts"]); // ✅ 캐시된 포스트 목록 자동 갱신
+      queryClient.invalidateQueries(["posts"]); // 캐시된 포스트 목록 자동 갱신
     },
     onError: () => {
       toast.error("업로드 중 오류가 발생했습니다.");
     },
   });
 
-  // ✅ 4. 업로드 핸들러
+  // 4. 업로드 핸들러
   const handleUploadPost = (newPost) => {
     uploadPostMutation.mutate(newPost);
   };
 
-  // ✅ 5. 로딩 & 에러 처리
+  // 5. 로딩 & 에러 처리
   if (isPending) return <LoadingPage />;
   if (isError) return <ErrorPage message={error?.message} />;
 
@@ -63,7 +63,7 @@ function PostList({ variant = FEED_VARIANT.HOME_FEED, showPostForm }) {
       {showPostForm && (
         <PostForm
           onSubmit={handleUploadPost}
-          // ✅ 업로드 중 버튼 비활성화
+          // 업로드 중 버튼 비활성화
           buttonDisabled={uploadPostMutation.isPending}
         />
       )}

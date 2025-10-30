@@ -104,14 +104,6 @@ function App() {
         />
       )}
 
-      {/* 로딩 중일 때 모달 내부에 표시 (선택사항) */}
-      {detailLoading && isModalOpen && (
-        <ModalLoading>
-          <Spinner />
-          <p>상세 정보를 불러오는 중...</p>
-        </ModalLoading>
-      )}
-
       {/* 상세 정보 로딩 에러 */}
       {detailError && isModalOpen && (
         <ModalLoading>

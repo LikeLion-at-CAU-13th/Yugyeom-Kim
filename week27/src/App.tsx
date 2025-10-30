@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import { useMovieSearch } from './hooks/useMovieSearch';
-import MovieCard from './components/MovieCard.tsx';
+import { useMovieDetail } from './hooks/useMovieDetail';
+import MovieCard from './components/MovieCard';
+import MovieModal from './components/MovieModal';
 import styled from 'styled-components';
+import type { Movie } from './types/movie.types';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { movies, status, error } = useMovieSearch(searchQuery);
 
-  // 영화 선택 핸들러 - TypeScript 타입 명시:
+  // 모달 및 상세 정보 상태
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { movie, loading: detailLoading, error: detailError } = useMovieDetail(selectedMovieId);
+
+  // 영화 선택 핸들러
   const handleMovieSelect = (id: number): void => {
-    console.log('선택한 영화 ID:', id);
+    setSelectedMovieId(id);
+    setIsModalOpen(true);
   };
 
-  // 이벤트 핸들러 - TypeScript 타입 자동 추론:
+  // 검색어 변경 핸들러
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-
   return (
     <Homepage>
-
       {/* 헤더 */}
       <Header>
         <Title>🎬 Search Movie 🎬</Title>
@@ -30,16 +37,15 @@ function App() {
       {/* 검색창 */}
       <Search>
         <SearchInput
-        type="text"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        placeholder="영화 제목을 입력하세요..."
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="영화 제목을 입력하세요..."
         />
       </Search>
 
       {/* 상태별 UI */}
       <Content>
-
         {/* 로딩 */}
         {status === 'loading' && (
           <StatusPage>
@@ -51,7 +57,7 @@ function App() {
         {/* 에러 */}
         {status === 'error' && (
           <StatusPage>
-            <p>⚠️ {error} </p>
+            <p>⚠️ {error}</p>
           </StatusPage>
         )}
 
@@ -61,12 +67,10 @@ function App() {
             {movies.length > 0 ? (
               <>
                 <div>
-                  <Result>
-                    총 {movies.length}개의 영화가 검색되었습니다.
-                  </Result>
+                  <Result>총 {movies.length}개의 영화가 검색되었습니다.</Result>
                 </div>
                 <MovieGrid>
-                  {movies.map((movie) => (
+                  {movies.map((movie: Movie) => (
                     <MovieCard
                       key={movie.id}
                       movie={movie}
@@ -89,8 +93,31 @@ function App() {
             <p>🔎 영화 제목을 검색해보세요!</p>
           </StatusPage>
         )}
-
       </Content>
+
+      {/* 상세정보 모달 */}
+      {isModalOpen && (
+        <MovieModal
+          movie={movie}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      {/* 로딩 중일 때 모달 내부에 표시 (선택사항) */}
+      {detailLoading && isModalOpen && (
+        <ModalLoading>
+          <Spinner />
+          <p>상세 정보를 불러오는 중...</p>
+        </ModalLoading>
+      )}
+
+      {/* 상세 정보 로딩 에러 */}
+      {detailError && isModalOpen && (
+        <ModalLoading>
+          <p style={{ color: 'white' }}>⚠️ {detailError}</p>
+        </ModalLoading>
+      )}
     </Homepage>
   );
 }
@@ -179,6 +206,23 @@ const Spinner = styled.div`
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
+`;
+
+const ModalLoading = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 `;

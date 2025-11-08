@@ -1,36 +1,34 @@
-import { projects } from "@/constant/projects"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { FiArrowLeftCircle } from "react-icons/fi"
+import { notFound } from "next/navigation"; // redirect → notFound 로 변경
+import { projects } from "@/constant/projects";
+import Link from "next/link";
+import { FiArrowLeftCircle } from "react-icons/fi";
+import BackButton from "@/components/BackButton";
 
 interface PageProps {
-    params: { slug: string }
+  params: { slug: string };
 }
 
 export async function generateStaticParams() {
-    return projects.map((project) => ({
-        slug: project.slug,
-    }))
-} 
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 export default async function ProjectDetailPage({ params }: PageProps) {
-    const resolvedParams = await Promise.resolve(params)
-    const project = projects.find((p) => p.slug === resolvedParams.slug)
+  const resolvedParams = await Promise.resolve(params);
+  const project = projects.find((p) => p.slug === resolvedParams.slug);
 
-    if (!project) redirect('/projects');
-
+  // 프로젝트가 없을 경우 404 페이지로 이동
+  if (!project) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen pt-[12vh]">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* 뒤로가기 버튼 */}
-        <Link
-          href="/projects"
-          className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-8 transition-colors gap-x-2"
-        >
- 
-          <FiArrowLeftCircle />프로젝트 목록으로
-        </Link>
+
+        {/* 뒤로가기 버튼 (BackButton 컴포넌트만 단독 사용) */}
+        <BackButton />
 
         {/* 프로젝트 헤더 */}
         <div className="mb-8">
@@ -53,7 +51,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
           {/* 링크 버튼 */}
           <div className="flex gap-4">
-            {project.url && project.url !== '#' && (
+            {project.url && project.url !== "#" && (
               <a
                 href={project.url}
                 target="_blank"
@@ -63,7 +61,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 프로젝트 보기
               </a>
             )}
-            {project.github && project.github !== '#' && (
+            {project.github && project.github !== "#" && (
               <a
                 href={project.github}
                 target="_blank"
@@ -78,7 +76,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
         {/* 프로젝트 상세 내용 */}
         {project.content && (
-          <div className="px-4 py-8  mx-auto ">
+          <div className="px-4 py-8 mx-auto">
             {/* 프로젝트 개요 */}
             {project.content.overview && (
               <section className="mb-6">
@@ -110,5 +108,5 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
